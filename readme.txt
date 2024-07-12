@@ -4,7 +4,7 @@
 
 Este projeto consiste em uma série de extrações de dados relacionados a commodities, cotações de moedas e ações de empresas. O objetivo é coletar e analisar informações financeiras relevantes para entender melhor as tendências do mercado e fazer previsões informadas.
 
-## Tecnologias Utilizadas
+## Tecnologias Utilizadas:
 
 - Python
 - Bibliotecas: `pandas`, `numpy`, `requests`, `yfinance`, entre outras
