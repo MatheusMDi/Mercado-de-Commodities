@@ -83,6 +83,9 @@ truncate_table('CotacaoRinggit', cursor)
 insert_df_to_sql(myr_usd_df, 'CotacaoRinggit', cursor)
 print('Inseriu MYR')
 
+truncate_table('CotacaoDirecional', cursor)
+insert_df_to_sql(diir3_df, 'CotacaoDirecional', cursor)
+print('Inseriu DIRR3')
 
 conn.commit()
 conn.close()
