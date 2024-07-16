@@ -148,8 +148,7 @@ if __name__ == "__main__":
 
 ### Script de Criação das Tabelas
 
-[Script](data\create.sql)
-data\create.sql
+[Script](data/create.sql)
 
 ## Uso
 
