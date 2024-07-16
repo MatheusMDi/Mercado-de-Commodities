@@ -33,6 +33,18 @@ Este projeto é destinado a todos os profissionais que utilizam informações fi
 - **static/**: Diretório que contém os arquivos CSS e JavaScript.
 - **data/**: Diretório que contém scripts Python para extração e manipulação de dados.
 
+## Prints do Projeto
+
+Aqui estão alguns prints que ilustram a interface e as funcionalidades do Painel de Cotações:
+
+### Tela Inicial
+![Tela Inicial](prints/home.png)
+
+### Gráfico de Cotações
+![Cotações](prints/report.png)
+
+
+
 ## Scripts na Pasta `data`
 
 ### Código 1: Extração de Dados de Commodities
