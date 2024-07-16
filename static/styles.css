@@ -1,0 +1,167 @@
+body {
+    background-color: #0d0d0d;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    margin: 20px;
+}
+
+table {
+    width: 100%; /* Altera a largura para 100% */
+    margin: 20px 0; /* Remove o espaço lateral */
+    border-collapse: collapse; /* Garante que não haja espaço entre as células */
+    border-radius: 0; /* Remove bordas arredondadas */
+}
+
+td, th {
+    padding: 15px;
+    text-align: center;
+    border: none; /* Remove as bordas das células */
+}
+
+
+th {
+    background-color: transparent;
+    color: #888;
+}
+
+td {
+    background-color: #262626;
+    color: #fff;
+}
+
+td:hover {
+    background-color: #333;
+}
+
+/* Estilo das variações */
+td .var-up {
+    color: #00ffcc; /* Cor para triângulo positivo */
+}
+
+td .var-down {
+    color: #ff3366; /* Cor para triângulo negativo */
+}
+
+/* Cor do valor VAR */
+td .var-value-up {
+    color: #00ffcc; /* Cor do valor para variação positiva */
+}
+
+td .var-value-down {
+    color: #ff3366; /* Cor do valor para variação negativa */
+}
+
+
+button {
+    padding: 10px 20px;
+    margin-top: 20px;
+    cursor: pointer;
+    background-color: #00ffcc;
+    color: #0d0d0d;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #00cc99;
+}
+
+.stock-ticker {
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.ticker-wrapper {
+    display: inline-block;
+    white-space: nowrap;
+    transition: transform 0.1s linear;
+}
+
+.ticker-item {
+    display: inline-block;
+    margin: 0 15px;
+    padding: 10px;
+    border-radius: 5px;
+    background: #333;
+}
+
+.ticker-symbol {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.ticker-price,
+.ticker-change {
+    font-size: 1.2em;
+}
+
+.positive {
+    color: #0f0;
+}
+
+.negative {
+    color: #f00;
+}
+
+.chart-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.chart-item {
+    position: relative;
+    height: 200px;
+    padding-top: 25px;
+}
+
+.apexcharts-toolbar,
+.apexcharts-menu {
+    font-size: 10px;
+    margin-top: 20px;
+}
+
+.apexcharts-button {
+    padding: 5px;
+}
+
+.chart-title {
+    text-align: center;
+    font-size: 0.9em;
+    font-weight: bold;
+    color: #fff;
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.apexcharts-scrollbar {
+    height: 12px;
+    background: #f0f0f0;
+}
+
+.apexcharts-scrollbar-thumb {
+    background: #007BFF;
+    width: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.apexcharts-scrollbar-thumb:hover {
+    background: #0056b3;
+}

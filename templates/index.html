@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placa de Valores da Bolsa</title>
+    <link rel="stylesheet" href="/static/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+</head>
+<body>
+
+    <div class="stock-ticker" id="stock-ticker">
+        <div class="ticker-wrapper" id="ticker-wrapper"></div>
+    </div>
+
+    <div class="chart-container">
+        <div class="chart-item">
+            <div class="chart-title">Cotação Dólar</div>
+            <div id="cotacao-dolar"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação Euro</div>
+            <div id="cotacao-euro"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação Won</div>
+            <div id="cotacao-won"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação Ringgit</div>
+            <div id="cotacao-ringgit"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação DIRR3</div>
+            <div id="cotacao-dir3"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação Steel Rebar</div>
+            <div id="cotacao-steel-rebar"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação Steel Scrap</div>
+            <div id="cotacao-steel-scrap"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação Aluminum</div>
+            <div id="cotacao-aluminum"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação Iron Ore</div>
+            <div id="cotacao-iron-ore"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação Copper</div>
+            <div id="cotacao-copper"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação Soybean Oil</div>
+            <div id="cotacao-soybean-oil"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação Natural Gas</div>
+            <div id="cotacao-natural-gas"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação Brent Oil</div>
+            <div id="cotacao-brent-oil"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação PP Futures</div>
+            <div id="cotacao-pp-futures"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação PVC Futures</div>
+            <div id="cotacao-pvc-futures"></div>
+        </div>
+        <div class="chart-item">
+            <div class="chart-title">Cotação LLDPE Futures</div>
+            <div id="cotacao-lldpe-futures"></div>
+        </div>
+    </div>
+ 
+        <button id="report-button">Report</button>
+    
+        <script>
+            async function fetchStockData() {
+                const response = await fetch('/api/stock-data');
+                const data = await response.json();
+                return data;
+            }
+    
+            async function updateTicker() {
+                fetchStockData().then(stockData => {
+                    const tickerWrapper = document.getElementById('ticker-wrapper');
+                    tickerWrapper.innerHTML = '';
+    
+                    stockData.forEach(stock => {
+                        const tickerItem = document.createElement('div');
+                        tickerItem.className = 'ticker-item';
+    
+                        const symbol = document.createElement('span');
+                        symbol.className = 'ticker-symbol';
+                        symbol.textContent = stock.symbol + ' ';
+    
+                        let priceFormatted;
+                        if (['Dólar', 'Euro', 'DIRR3'].includes(stock.symbol)) {
+                            priceFormatted = `R$${stock.price.toFixed(2)}`; // BRL
+                        } else {
+                            priceFormatted = `$${stock.price.toFixed(2)}`; // USD
+                        }
+    
+                        const price = document.createElement('span');
+                        price.className = 'ticker-price';
+                        price.textContent = priceFormatted + ' ';
+    
+                        const change = document.createElement('span');
+                        change.className = 'ticker-change';
+                        change.textContent = (stock.change > 0 ? '+' : '') + stock.change.toFixed(2) + '%';
+                        change.classList.add(stock.change > 0 ? 'positive' : 'negative');
+    
+                        tickerItem.appendChild(symbol);
+                        tickerItem.appendChild(price);
+                        tickerItem.appendChild(change);
+    
+                        tickerWrapper.appendChild(tickerItem);
+                    });
+    
+                    const clone = tickerWrapper.innerHTML;
+                    tickerWrapper.innerHTML += clone;
+    
+                    startTickerAnimation();
+                });
+            }
+    
+            function startTickerAnimation() {
+                const wrapper = document.getElementById('ticker-wrapper');
+                const totalWidth = wrapper.scrollWidth / 2;
+                let scrollAmount = 0;
+    
+                function animate() {
+                    scrollAmount += 0.5;
+                    wrapper.style.transform = `translateX(-${scrollAmount}px)`;
+    
+                    if (scrollAmount < totalWidth) {
+                        requestAnimationFrame(animate);
+                    } else {
+                        scrollAmount = 0;
+                        requestAnimationFrame(animate);
+                    }
+                }
+    
+                animate();
+            }
+    
+            async function renderChart(containerId, fetchUrl) {
+                const historyData = await fetch(fetchUrl).then(res => res.json());
+                const labels = historyData.map(entry => entry.Data); // Todos os rótulos
+                const prices = historyData.map(entry => entry.price); // Todos os preços
+    
+                const options = {
+                    chart: {
+                        type: 'line',
+                        toolbar: {
+                            show: true,
+                            tools: {
+                                download: false,
+                                selection: true,
+                                zoom: true,
+                                zoomin: true,
+                                zoomout: true,
+                                pan: true,
+                                reset: true
+                            },
+                            autoSelected: 'zoom',
+                            offsetY: -20 // Aumenta a distância da linha
+                        },
+                        zoom: {
+                            enabled: true // Habilita o zoom
+                        },
+                    },
+                    series: [{
+                        name: 'Cotação',
+                        data: prices
+                    }],
+                    xaxis: {
+                        categories: labels,
+                        labels: { show: true },
+                        min: 2, // Inicia 2px depois
+                        max: prices.length - 3 // Termina 2px antes
+                    },
+                    yaxis: {
+                        labels: { show: false }
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        formatter: (val) => val.toFixed(2),
+                        offsetY: -10,
+                        style: {
+                            colors: ["#000"],
+                            background: {
+                                enabled: false
+                            }
+                        },
+                        dropShadow: {
+                            enabled: false
+                        }
+                    },
+                    stroke: {
+                        curve: 'straight',
+                        width: 1,
+                        colors: ['#fff'],
+                    },
+                    markers: {
+                        size: 1,
+                        colors: ['#0f0'],
+                        strokeWidth: 2,
+                        hover: {
+                            size: 2
+                        }
+                    },
+                    tooltip: {
+                        enabled: false
+                    },
+                    grid: {
+                        show: false // Remove a grade de fundo
+                    }
+                };
+    
+                const chart = new ApexCharts(document.querySelector(`#${containerId}`), options);
+                chart.render();
+            }
+    
+            document.addEventListener('DOMContentLoaded', async () => {
+                await updateTicker();
+                await renderChart('cotacao-dolar', '/api/history/cotacaodolar');
+                await renderChart('cotacao-euro', '/api/history/cotacaoeuro');
+                await renderChart('cotacao-won', '/api/history/cotacaoWon');
+                await renderChart('cotacao-ringgit', '/api/history/cotacaoringgit');
+                await renderChart('cotacao-dir3', '/api/history/cotacaodir3');
+                await renderChart('cotacao-steel-rebar', '/api/history/CotacaoSteelRebar');
+                await renderChart('cotacao-steel-scrap', '/api/history/CotacaoSteelScrap');
+                await renderChart('cotacao-aluminum', '/api/history/CotacaoAluminum');
+                await renderChart('cotacao-iron-ore', '/api/history/CotacaoIronOre');
+                await renderChart('cotacao-copper', '/api/history/CotacaoCopper');
+                await renderChart('cotacao-soybean-oil', '/api/history/CotacaoSoybeanOil');
+                await renderChart('cotacao-natural-gas', '/api/history/CotacaoNaturalGas');
+                await renderChart('cotacao-brent-oil', '/api/history/CotacaoBrentOil');
+                await renderChart('cotacao-pp-futures', '/api/history/CotacaoPPFutures');
+                await renderChart('cotacao-pvc-futures', '/api/history/CotacaoPVCFutures');
+                await renderChart('cotacao-lldpe-futures', '/api/history/CotacaoLLDPEFutures');
+    
+                document.getElementById('report-button').addEventListener('click', () => {
+                    window.location.href = '/report';
+                });
+            });
+        </script>
+    </body>
+    </html>
+    

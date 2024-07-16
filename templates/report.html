@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+   
+    <table>
+        <thead>
+            <tr>
+                <th>Cotação</th>
+                <th>Preço</th>
+                <th>Abertura</th>
+                <th>Máxima</th>
+                <th>Mínima</th>
+                <th>Variação</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in report_data %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>
+                        {% if row[0] in ['Dólar', 'Euro', 'DIRR3'] %}
+                            R$ {{ row[1] | float | round(2) }}
+                        {% else %}
+                            $ {{ row[1] | float | round(2) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if row[0] in ['Dólar', 'Euro', 'DIRR3'] %}
+                            R$ {{ row[2] | float | round(2) }}
+                        {% else %}
+                            $ {{ row[2] | float | round(2) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if row[0] in ['Dólar', 'Euro', 'DIRR3'] %}
+                            R$ {{ row[3] | float | round(2) }}
+                        {% else %}
+                            $ {{ row[3] | float | round(2) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if row[0] in ['Dólar', 'Euro', 'DIRR3'] %}
+                            R$ {{ row[4] | float | round(2) }}
+                        {% else %}
+                            $ {{ row[4] | float | round(2) }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if row[5] | float > 0 %}
+                            <span class="var-up">&#9650;</span> <span class="var-value-up">{{ row[5] }} %</span>
+                        {% elif row[5] | float < 0 %}
+                            <span class="var-down">&#9660;</span> <span class="var-value-down">{{ row[5] }} %</span>
+                        {% else %}
+                            {{ row[5] }} %
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <button onclick="window.location.href='/'">Voltar para a Página Inicial</button>
+</body>
+</html>
